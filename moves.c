@@ -26,6 +26,8 @@ int	move_left(t_game *game)
 		game->player_y = i;
 		game->player_x = j - 1;
 	}
+	else 
+		return 0;
 	if (!change_places(game))
         return 0;
     return 1;
@@ -57,6 +59,8 @@ int	move_right(t_game *game)
 		game->player_y = i;
 		game->player_x = j + 1;
 	}
+	else
+		return 0;
     if (!change_places(game))
         return 0;
     return 1;
@@ -88,6 +92,8 @@ int	move_down(t_game *game)
 		game->player_y = i + 1;
 		game->player_x = j;
 	}
+	else
+		return 0;
     if (!change_places(game))
         return 0;
     return (1);
@@ -118,6 +124,8 @@ int move_up(t_game *game)
 		game->player_y = i - 1;
 		game->player_x = j;
 	}
+	else 
+		return 0;
     if (!change_places(game))
         return 0;
     return 1;
@@ -134,9 +142,16 @@ int game_in(t_game *game)
 		return (0);
 	}
 	game->win = mlx_new_window(game->mlx, game->cols * 64, game->rows * 64, "so_long");
+	if (!game->win)
+	{
+		write(2, "Error\nwin", 9);
+		ft_free_resources(game);
+		return (0);
+	}
 	create_img(game);
 	start_game(game);
 	mlx_key_hook(game->win, input, game);
 	mlx_loop(game->mlx);
+	free(game->mlx);
 	return 1;
 }

@@ -229,3 +229,58 @@ void	flood_fill(char **map, int y, int x)
 	flood_fill(map, y, x + 1);
 	flood_fill(map, y, x - 1);
 }
+void	ft_putnbr(int n)
+{
+	long int nb = n;
+    if (n < 0)
+    {
+        write(1, "-", 1);
+        n = -n;
+    }
+    if (n > 9)
+        ft_putnbr(n / 10);
+    char c = nb % 10 + '0';
+    write(1, &c, 1);
+}
+
+void	ft_printf(const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    while (*format)
+    {
+        if (*format == '%' && (*(format + 1) == 'd' || *(format + 1) == 's'))
+        {
+            format++;
+            if (*format == 'd')
+                ft_putnbr(va_arg(args, int));
+        }
+        else
+            write(1, format, 1);
+        format++;
+    }
+
+    va_end(args);
+}
+void ft_free_image(t_game *game)
+{
+	mlx_destroy_image(game->mlx, game->wall);
+	mlx_destroy_image(game->mlx, game->player);
+	mlx_destroy_image(game->mlx, game->collect);
+	mlx_destroy_image(game->mlx, game->exit);
+	mlx_destroy_image(game->mlx, game->space);
+}
+void ft_free_resources(t_game *game)
+{
+    ft_free_image(game);
+    if (game->win)
+        mlx_destroy_window(game->mlx, game->win);
+    if (game->mlx)
+        free(game->mlx);
+}
+void close_window(t_game *game)
+{
+    ft_free_resources(game);
+    exit(0);
+}

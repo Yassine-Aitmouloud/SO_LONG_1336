@@ -131,29 +131,24 @@ int input(int key, t_game *game)
 	else if (key == 119)
 	{
 		if (move_up(game))
-			printf("count = %d\n", game->count++);
+			ft_printf("count = %d\n", game->count++);
 	}
 	else if (key == 115)
 	{
 		if (move_down(game))
-			printf("count = %d\n", game->count++);
+			ft_printf("count = %d\n", game->count++);
 	}
 	else if (key == 97)
 	{
 		if (move_left(game))
-			printf("count = %d\n", game->count++);
+			ft_printf("count = %d\n", game->count++);
 	}
 	else if (key == 100)
 	{
 		if (move_right(game))
-			printf("count = %d\n", game->count++);	
+			ft_printf("count = %d\n", game->count++);	
 	}
 	return (0);
-}
-int	close_window(t_game *game)
-{
-    mlx_destroy_window(game->mlx, game->win);
-    exit(0);
 }
 
 int	change_places(t_game *game)
@@ -275,11 +270,21 @@ int	main(int ac, char **av)
 	{
 		write(2, "Error\ncep", 10);
 		close(fd);
+		free_map(game.o_map, game.rows);
 		free_map(game.map, game.rows);
 		return (0);
 	}
 	close(fd);
-	game_in(&game);
+	if (!game_in(&game))
+	{
+		free_map(game.map, game.rows);
+		free_map(game.o_map, game.rows);
+		return (0);
+	}
 	free_map(game.map, game.rows);
+	free_map(game.o_map, game.rows);
+	ft_free_resources(&game);
+	mlx_destroy_window(game.mlx, game.win);
+	mlx_destroy_display(game.mlx);
 	return (1);
 }

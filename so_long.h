@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:39:52 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/08 02:48:34 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:41:38 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ typedef struct s_game
 	int		cols;
 	char	**map;
 }			t_game;
+void	ft_putstr(char *str);
+void	ft_putnbr(int n);
+void	ft_printf(const char *str, ...);
 void	create_img(t_game *game);
 void	count_map(t_game *game);
 int 	input(int key, t_game *game);
@@ -64,7 +67,6 @@ void	start_game(t_game *game);
 int	change_places(t_game *game);
 char 	**copy_map(char **map);
 int 	game_in(t_game *game);
-int	close_window(t_game *game);
 void		*ft_memcpy(void *dst, const void *src, size_t n);
 void		*ft_realloc(void *ptr, int old_size, int new_size);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -78,5 +80,7 @@ void		ft_free(char **ptr);
 int			all_walls(char **map);
 void		flood_fill(char **map, int y, int x);
 int			chack_valid_path(t_game *game);
-
+void ft_free_image(t_game *game);
+void ft_free_resources(t_game *game);
+void close_window(t_game *game);
 #endif

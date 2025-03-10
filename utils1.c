@@ -279,16 +279,32 @@ void ft_free_image(t_game *game)
 }
 void ft_free_resources(t_game *game)
 {
+    if (!game)
+        return;
+
+    if (game->map)
+    {
+        free_map(game->map, game->rows);
+        game->map = NULL;
+    }
+	if (game->o_map)
+	{
+		free_map(game->o_map, game->rows);
+		game->o_map = NULL;
+	}
     ft_free_image(game);
     if (game->win)
         mlx_destroy_window(game->mlx, game->win);
+    
     if (game->mlx)
 	{
 		mlx_destroy_display(game->mlx);
         free(game->mlx);
+        game->mlx = NULL;
 	}
 }
-void close_window(t_game *game)
+
+int close_window(t_game *game)
 {
     ft_free_resources(game);
     exit(0);

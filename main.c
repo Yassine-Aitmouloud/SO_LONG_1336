@@ -55,7 +55,7 @@ size_t count_lines(const char *filename)
     return count;
 }
 
-char **store_map(char *filename, t_garbage **garbage)
+char **store_map(char *filename)
 {
     size_t i = 0;
     size_t j = 0;
@@ -83,7 +83,6 @@ char **store_map(char *filename, t_garbage **garbage)
         close(fd);
         return NULL;
     }
-	add_to_garbage(garbage, map);
     while ((line = get_next_line(fd)) != NULL)
     {
 		printf("line = %p\n", line);
@@ -149,7 +148,9 @@ int	check_for_ber(char *name)
 int input(int key, t_game *game)
 {
 	if (key == ESC)
-		exit(0);
+		close_window(game);
+	else if (key == 17)
+		close_window(game);
 	else if (key == 119)
 	{
 		if (move_up(game))
@@ -242,7 +243,6 @@ int	main(int ac, char **av)
 {
 	int	i;
 	int	check_valid_map;
-	t_garbage	**garbage;
 	i = 0;
 	check_valid_map = 0;
 	t_game 		game;
@@ -255,13 +255,13 @@ int	main(int ac, char **av)
 	}
 	if (check_for_ber(av[1]) == 0)
 		return (0);
-	game.map = store_map(av[1], garbage);
+	game.map = store_map(av[1]);
 	if (game.map == NULL)
 	{
 		write(2, "Error\nstore", 11);
 		return (0);
 	}
-	game.o_map = copy_map(game.map,av[1], garbage);
+	game.o_map = copy_map(game.map,av[1]);
 	while (game.map[i])
 	{
 		if (validate_map_line(game.map[i]) == 0)
@@ -302,7 +302,5 @@ int	main(int ac, char **av)
 	free_map(game.map, game.rows);
 	free_map(game.o_map, game.rows);
 	ft_free_resources(&game);
-	free_map(game.map, game.rows);
-	free_map(game.o_map, game.rows);
 	return (1);
 }

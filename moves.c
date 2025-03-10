@@ -6,13 +6,7 @@ int	move_left(t_game *game)
 	j = game->player_x;
 	i = game->player_y;
 	if (j - 1 == game->x_exit && i == game->y_exit  && game->collect_count == 0)
-	{
 		close_window(game);
-		free(game->mlx);
-		free_map(game->o_map, game->rows);
-		free_map(game->map, game->rows);
-		exit(0);
-	}
 	if (game->o_map[i][j] != 'P')
 	{
 		write(2, "Error\nppy", 9);
@@ -42,13 +36,7 @@ int	move_right(t_game *game)
 	j = game->player_x;
 	i = game->player_y;
 	if (j + 1 == game->x_exit && i == game->y_exit  && game->collect_count == 0)
-	{
 		close_window(game);
-		free(game->mlx);
-		free_map(game->o_map, game->rows);
-		free_map(game->map, game->rows);
-		exit(0);
-	}
 	if (game->o_map[i][j] != 'P')
 	{
 		write(2, "Error\nppy", 9);
@@ -78,13 +66,7 @@ int	move_down(t_game *game)
 	j = game->player_x;
 	i = game->player_y;
 	if (j == game->x_exit && i + 1 == game->y_exit  && game->collect_count == 0)
-	{
 		close_window(game);
-		free(game->mlx);
-		free_map(game->o_map, game->rows);
-		free_map(game->map, game->rows);
-		exit(0);
-	}
 	if (game->o_map[i][j] != 'P')
 	{
 		write(2, "Error\nppy", 9);
@@ -113,13 +95,7 @@ int move_up(t_game *game)
 	j = game->player_x;
 	i = game->player_y;
 	if (j == game->x_exit && i - 1 == game->y_exit  && game->collect_count == 0)
-	{
 		close_window(game);
-		free(game->mlx);
-		free_map(game->o_map, game->rows);
-		free_map(game->map, game->rows);
-		exit(0);
-	}
 	if (game->o_map[i][j] != 'P')
 	{
 		write(2, "Error\nppy", 9);
@@ -167,6 +143,7 @@ int game_in(t_game *game)
 	create_img(game);
 	start_game(game);
 	mlx_key_hook(game->win, input, game);
+	mlx_hook(game->win, 17, 0, close_window, game);
 	mlx_loop(game->mlx);
 	free(game->mlx);
 	return 1;

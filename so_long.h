@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:39:52 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/10 01:40:28 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/10 02:52:44 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,8 @@ enum                    e_keycode
     KEY_LEFT = 65361,
     KEY_RIGHT = 65363,
     KEY_UP = 65362,
+	CROSS = 17,
 };
-
-typedef struct s_garbage
-{
-	void *ptr;
-	struct s_garbage *next;
-}               t_garbage;
 
 typedef struct s_game
 {
@@ -64,8 +59,7 @@ typedef struct s_game
 	int		cols;
 	char	**map;
 }			t_game;
-void clean_garbage(t_garbage **garbage);
-void add_to_garbage(t_garbage **garbage, void *ptr);
+int cross_window(t_game *game);
 void gnl_cleanup(void);
 char	*get_next_line(int fd);
 char	*ft_strdup(const char *s1);
@@ -91,7 +85,7 @@ void		*ft_memcpy(void *dst, const void *src, size_t n);
 void		*ft_realloc(void *ptr, int old_size, int new_size);
 int			ft_strcmp(const char *s1, const char *s2);
 void		free_map(char **map, int rows);
-char		**store_map(char *fd, t_garbage **garbage);
+char		**store_map(char *fd);
 int			open_map_file(char *map);
 int			check_for_ber(char *map);
 int			validate_map_line(char *line);
@@ -102,5 +96,5 @@ void		flood_fill(char **map, int y, int x);
 int			chack_valid_path(t_game *game);
 void ft_free_image(t_game *game);
 void ft_free_resources(t_game *game);
-void close_window(t_game *game);
+int close_window(t_game *game);
 #endif

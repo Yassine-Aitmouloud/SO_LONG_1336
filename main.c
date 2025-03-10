@@ -1,4 +1,3 @@
-#include "get_next_line.h"
 #include "so_long.h"
 
 void	create_img(t_game *game)
@@ -34,53 +33,76 @@ void	create_img(t_game *game)
 		exit(0);
 	}
 }
-char	**store_map(int fd)
-{
-	size_t		i;
-	size_t		j;
-	char	*line;
-	char	**map;
-	char	**tmp_map;
-	size_t	map_size;
 
-	i = 0;
-	j = 0;
-	map = NULL;
-	map_size = 0;
-	map = malloc(sizeof(char *) * 1);
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		if (j == 0)
-			j = ft_strlen(line);
-		else if (ft_strlen(line) != j)
-		{
-			write(2, "Erro1\n", 6);
-			free(line);
-			free_map(map, i);
-			return (NULL);
-		}
-		tmp_map = ft_realloc(map, sizeof(char *) * map_size, sizeof(char *) * (i
-					+ 2));
-		if (!tmp_map)
-		{
-			write(2, "Erro2\n", 6);
-			free(line);
-			free_map(map, i);
-			return (NULL);
-		}
-		map = tmp_map;
-		map[i] = line;
-		i++;
-		map_size = i;
-	}
-	if (!line && i == 0)
-	{
-		free_map(map, i);
-		return (NULL);
-	}
-	map[i] = NULL;
-	close(fd);
-	return (map);
+size_t count_lines(const char *filename)
+{
+    size_t count = 0;
+    char *line;
+    int fd = open(filename, O_RDONLY);
+
+    if (fd == -1)
+    {
+        write(2, "Error\nopen\n", 11);
+        return 0;
+    }
+
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        count++;
+        free(line);
+    }
+    close(fd);
+    return count;
+}
+
+char **store_map(char *filename, t_garbage **garbage)
+{
+    size_t i = 0;
+    size_t j = 0;
+    char *line;
+    char **map;
+    size_t map_size;
+    int fd = open(filename, O_RDONLY);
+
+    if (fd == -1)
+    {
+        write(2, "Error\nopen\n", 11);
+        return NULL;
+    }
+    map_size = count_lines(filename);
+    if (map_size == 0)
+    {
+        write(2, "Error\nempty file\n", 17);
+        close(fd);
+        return NULL;
+    }
+    map = (char **)malloc(sizeof(char *) * (map_size + 1));
+    if (!map)
+    {
+        write(2, "Error\nmalloc\n", 13);
+        close(fd);
+        return NULL;
+    }
+	add_to_garbage(garbage, map);
+    while ((line = get_next_line(fd)) != NULL)
+    {
+		printf("line = %p\n", line);
+        if (j == 0)
+            j = ft_strlen(line);
+        else if (ft_strlen(line) != j)
+        {
+            write(2, "Error\ninvalid line length\n", 26);
+            free(line);
+            free_map(map, i);
+            close(fd);
+            return NULL;
+        }
+        map[i] = line;
+        i++;
+    }
+    map[i] = NULL;
+    close(fd);
+    return map;
 }
 void	count_map(t_game *game)
 {
@@ -192,19 +214,25 @@ void	start_game(t_game *game)
 		i++;
 	}
 }
-char **copy_map(char **map)
+char **copy_map(char **map, char *av)
 {
 	int	i;
-	int	j;
+	int	map_size;
 	char	**o_map;
 
+	map_size = count_lines(av);
 	i = 0;
-	j = 0;
-	o_map = malloc(sizeof(char *) * 1);
+	o_map = malloc(sizeof(char *) * (map_size + 1));
+	if (!o_map)
+		return (NULL);
 	while (map[i])
 	{
-		o_map = ft_realloc(o_map, sizeof(char *) * i, sizeof(char *) * (i + 2));
 		o_map[i] = ft_strdup(map[i]);
+		if (!o_map[i])
+		{
+			free_map(o_map, i);
+			return (NULL);
+		}
 		i++;
 	}
 	o_map[i] = NULL;
@@ -213,8 +241,8 @@ char **copy_map(char **map)
 int	main(int ac, char **av)
 {
 	int	i;
-	int	fd;
 	int	check_valid_map;
+	t_garbage	**garbage;
 	i = 0;
 	check_valid_map = 0;
 	t_game 		game;
@@ -227,54 +255,44 @@ int	main(int ac, char **av)
 	}
 	if (check_for_ber(av[1]) == 0)
 		return (0);
-	fd = open_map_file(av[1]);
-	if (fd == -1)
-	{
-		write(2, "Error\nop", 8);
-		return (0);
-	}
-	game.map = store_map(fd);
-	game.o_map = copy_map(game.map);
+	game.map = store_map(av[1], garbage);
 	if (game.map == NULL)
 	{
 		write(2, "Error\nstore", 11);
-		close(fd);
 		return (0);
 	}
+	game.o_map = copy_map(game.map,av[1], garbage);
 	while (game.map[i])
 	{
 		if (validate_map_line(game.map[i]) == 0)
 		{
-
-			close(fd);
 			free_map(game.map, game.rows);
+			free_map(game.o_map, game.rows);
 			return (0);
 		}
 		i++;
 	}
 	if (all_walls(game.map) == 0)
 	{
-		close(fd);
 		free_map(game.map, game.rows);
+		free_map(game.o_map, game.rows);
 		write(2, "Error\nwalls", 11);
 		return (0);
 	}
 	if (check_for_data(&game) == 0)
 	{
-		close(fd);
 		free_map(game.map, game.rows);
+		free_map(game.o_map, game.rows);
 		return (0);
 	}
 	game.rows = i;
 	if (chack_valid_path(&game) == 0)
 	{
 		write(2, "Error\ncep", 10);
-		close(fd);
 		free_map(game.o_map, game.rows);
 		free_map(game.map, game.rows);
 		return (0);
 	}
-	close(fd);
 	if (!game_in(&game))
 	{
 		free_map(game.map, game.rows);
@@ -284,7 +302,7 @@ int	main(int ac, char **av)
 	free_map(game.map, game.rows);
 	free_map(game.o_map, game.rows);
 	ft_free_resources(&game);
-	mlx_destroy_window(game.mlx, game.win);
-	mlx_destroy_display(game.mlx);
+	free_map(game.map, game.rows);
+	free_map(game.o_map, game.rows);
 	return (1);
 }

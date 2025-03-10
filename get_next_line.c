@@ -6,12 +6,11 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:45:35 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/02 21:48:29 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/10 00:51:56 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
+# include "so_long.h"
 void gnl_cleanup(void)
 {
     char *line = NULL;
@@ -31,9 +30,13 @@ char	*ft_creat_left(char *left, char *buffer, int fd)
 			break ;
 		if (!left)
 			left = ft_strdup("");
+		if (!left)
+			return (NULL);
 		buffer[check] = '\0';
 		tmp = left;
 		left = ft_strjoin(tmp, buffer);
+		if (!left)
+			return (free(tmp), NULL);
 		free(tmp);
 		if (ft_strchr(left, '\n') != NULL)
 			break ;
@@ -84,15 +87,7 @@ char	*get_next_line(int fd)
 	if (!left)
 		return (NULL);
 	left = ft_line(&line, left);
+	if (!line)
+		return (free(left), left = NULL);
 	return (line);
 }
-// int main()
-// {
-// 	int fd = open("test.ber", O_RDONLY);
-// 	char *line;
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("line = %s\n", line);
-// 	}
-// 	return 0;
-// }

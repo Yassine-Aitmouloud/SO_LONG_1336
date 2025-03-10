@@ -1,5 +1,4 @@
 #include "so_long.h"
-#include "get_next_line.h"
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;
@@ -26,6 +25,7 @@ void	free_map(char **map, int rows)
 		i++;
 	}
 	free(map);
+	map = NULL;
 }
 
 int	validate_map_line(char *line)
@@ -229,6 +229,7 @@ void	flood_fill(char **map, int y, int x)
 	flood_fill(map, y, x + 1);
 	flood_fill(map, y, x - 1);
 }
+
 void	ft_putnbr(int n)
 {
 	long int nb = n;
@@ -265,11 +266,16 @@ void	ft_printf(const char *format, ...)
 }
 void ft_free_image(t_game *game)
 {
-	mlx_destroy_image(game->mlx, game->wall);
-	mlx_destroy_image(game->mlx, game->player);
-	mlx_destroy_image(game->mlx, game->collect);
-	mlx_destroy_image(game->mlx, game->exit);
-	mlx_destroy_image(game->mlx, game->space);
+	if (game->wall)
+        mlx_destroy_image(game->mlx, game->wall);
+    if (game->player)
+        mlx_destroy_image(game->mlx, game->player);
+    if (game->collect)
+        mlx_destroy_image(game->mlx, game->collect);
+    if (game->exit)
+        mlx_destroy_image(game->mlx, game->exit);
+    if (game->space)
+        mlx_destroy_image(game->mlx, game->space);
 }
 void ft_free_resources(t_game *game)
 {
@@ -277,7 +283,10 @@ void ft_free_resources(t_game *game)
     if (game->win)
         mlx_destroy_window(game->mlx, game->win);
     if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
         free(game->mlx);
+	}
 }
 void close_window(t_game *game)
 {

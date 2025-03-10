@@ -12,7 +12,7 @@ OBJ = $(CFILES:.c=.o)
 
 all: $(NAME)
 
-$(NAME) : $(OBJ) so_long.h get_next_line.h
+$(NAME) : $(OBJ) so_long.h
 	$(CC) $(OBJ) -lmlx -lXext -lX11 -o $(NAME)
 
 

@@ -6,12 +6,11 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:45:32 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/06 22:12:21 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/10 00:51:52 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
+#include "so_long.h"
 char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;

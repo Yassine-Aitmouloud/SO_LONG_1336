@@ -8,6 +8,9 @@ int	move_left(t_game *game)
 	if (j - 1 == game->x_exit && i == game->y_exit  && game->collect_count == 0)
 	{
 		close_window(game);
+		free(game->mlx);
+		free_map(game->o_map, game->rows);
+		free_map(game->map, game->rows);
 		exit(0);
 	}
 	if (game->o_map[i][j] != 'P')
@@ -41,6 +44,9 @@ int	move_right(t_game *game)
 	if (j + 1 == game->x_exit && i == game->y_exit  && game->collect_count == 0)
 	{
 		close_window(game);
+		free(game->mlx);
+		free_map(game->o_map, game->rows);
+		free_map(game->map, game->rows);
 		exit(0);
 	}
 	if (game->o_map[i][j] != 'P')
@@ -74,6 +80,9 @@ int	move_down(t_game *game)
 	if (j == game->x_exit && i + 1 == game->y_exit  && game->collect_count == 0)
 	{
 		close_window(game);
+		free(game->mlx);
+		free_map(game->o_map, game->rows);
+		free_map(game->map, game->rows);
 		exit(0);
 	}
 	if (game->o_map[i][j] != 'P')
@@ -106,6 +115,9 @@ int move_up(t_game *game)
 	if (j == game->x_exit && i - 1 == game->y_exit  && game->collect_count == 0)
 	{
 		close_window(game);
+		free(game->mlx);
+		free_map(game->o_map, game->rows);
+		free_map(game->map, game->rows);
 		exit(0);
 	}
 	if (game->o_map[i][j] != 'P')
@@ -138,6 +150,8 @@ int game_in(t_game *game)
 	count_map(game);
 	if (!game->mlx)
 	{
+		free_map(game->map, game->rows);
+		free_map(game->o_map, game->rows);
 		write(2, "Error\nmlx", 9);
 		return (0);
 	}
@@ -145,6 +159,8 @@ int game_in(t_game *game)
 	if (!game->win)
 	{
 		write(2, "Error\nwin", 9);
+		free_map(game->map, game->rows);
+		free_map(game->o_map, game->rows);
 		ft_free_resources(game);
 		return (0);
 	}

@@ -6,102 +6,71 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:35:12 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 21:47:43 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:53:13 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-#include "so_long.h"
-
-char **allocate_map(t_helper *helper)
+char	**allocate_map(t_helper *helper)
 {
-    helper->line = get_next_line(helper->fd);
-    while (helper->line != NULL)
-    {
-        if (helper->j == 0)
-            helper->j = ft_strlen(helper->line);
-        else if (ft_strlen(helper->line) != helper->j)
-        {
-            free(helper->line);
-            helper->line = get_next_line(-1);
-            free(helper->line);
-            free_map(helper->map, helper->i);
-            close(helper->fd);
-            return NULL;
-        }
-        helper->map[helper->i] = helper->line;
-        helper->i++;
-        helper->line = get_next_line(helper->fd);
-    }
-    helper->map[helper->i] = NULL;
-    close(helper->fd);
-    return helper->map;
+	helper->line = get_next_line(helper->fd);
+	while (helper->line != NULL)
+	{
+		if (helper->j == 0)
+			helper->j = ft_strlen(helper->line);
+		else if (ft_strlen(helper->line) != helper->j)
+		{
+			free(helper->line);
+			helper->line = get_next_line(-1);
+			free(helper->line);
+			free_map(helper->map, helper->i);
+			close(helper->fd);
+			return (NULL);
+		}
+		helper->map[helper->i] = helper->line;
+		helper->i++;
+		helper->line = get_next_line(helper->fd);
+	}
+	helper->map[helper->i] = NULL;
+	close(helper->fd);
+	return (helper->map);
 }
 
-char **store_map(char *filename)
+char	**store_map(char *filename)
 {
-    t_helper helper;
+	t_helper	helper;
 
-    helper.i = 0;
-    helper.j = 0;
-    helper.fd = open(filename, O_RDONLY);
-    if (helper.fd == -1)
-    {
-        write(2, "Error\nopen\n", 11);
-        return NULL;
-    }
-    helper.map_size = count_lines(filename);
-    if (helper.map_size == 0)
-    {
-        write(2, "Error\nempty file\n", 17);
-        close(helper.fd);
-        return NULL;
-    }
-    helper.map = (char **)malloc(sizeof(char *) * (helper.map_size + 1));
-    if (!helper.map)
-    {
-        write(2, "Error\nmalloc\n", 13);
-        close(helper.fd);
-        return NULL;
-    }
-    return allocate_map(&helper);
-}
-
-int	input(int key, t_game *game)
-{
-	if (key == ESC)
-		close_window(game);
-	else if (key == 17)
-		close_window(game);
-	else if (key == 119)
+	helper.i = 0;
+	helper.j = 0;
+	helper.fd = open(filename, O_RDONLY);
+	if (helper.fd == -1)
 	{
-		if (move_up(game))
-			ft_printf("count = %d\n", game->count++);
+		write(2, "Error\nopen\n", 11);
+		return (NULL);
 	}
-	else if (key == 115)
+	helper.map_size = count_lines(filename);
+	if (helper.map_size == 0)
 	{
-		if (move_down(game))
-			ft_printf("count = %d\n", game->count++);
+		write(2, "Error\nempty file\n", 17);
+		close(helper.fd);
+		return (NULL);
 	}
-	else if (key == 97)
+	helper.map = (char **)malloc(sizeof(char *) * (helper.map_size + 1));
+	if (!helper.map)
 	{
-		if (move_left(game))
-			ft_printf("count = %d\n", game->count++);
+		write(2, "Error\nmalloc\n", 13);
+		close(helper.fd);
+		return (NULL);
 	}
-	else if (key == 100)
-	{
-		if (move_right(game))
-			ft_printf("count = %d\n", game->count++);
-	}
-	return (0);
+	return (allocate_map(&helper));
 }
 
 void	get_the_map(int ac, char **av, t_game *game)
 {
 	if (ac != 2)
 	{
-		write(2, "Error\n", 9);
+		write(2, "Error\nThere is no map", 23);
 		exit(0);
 	}
 	if (check_for_ber(av[1]) == 0)

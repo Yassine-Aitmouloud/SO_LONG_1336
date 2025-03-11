@@ -1,17 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   moves.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/11 20:21:40 by yaaitmou          #+#    #+#             */
+/*   Updated: 2025/03/11 20:40:26 by yaaitmou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
+
 int	move_left(t_game *game)
 {
-	int	(i), (j);
-
+	int (i), (j);
 	j = game->player_x;
 	i = game->player_y;
-	if (j - 1 == game->x_exit && i == game->y_exit  && game->collect_count == 0)
+	if (j - 1 == game->x_exit && i == game->y_exit && game->collect_count == 0)
 		close_window(game);
-	if (game->o_map[i][j] != 'P')
-	{
-		write(2, "Error\nppy", 9);
-		return 0;
-	}
 	if (game->o_map[i][j - 1] != '1' && game->o_map[i][j - 1] != 'E')
 	{
 		if (game->o_map[i][j - 1] == 'C')
@@ -23,25 +30,20 @@ int	move_left(t_game *game)
 		game->player_y = i;
 		game->player_x = j - 1;
 	}
-	else 
-		return 0;
+	else
+		return (0);
 	if (!change_places(game))
-        return 0;
-    return 1;
+		return (0);
+	return (1);
 }
+
 int	move_right(t_game *game)
 {
-	int	(i), (j);
-
+	int (i), (j);
 	j = game->player_x;
 	i = game->player_y;
-	if (j + 1 == game->x_exit && i == game->y_exit  && game->collect_count == 0)
+	if (j + 1 == game->x_exit && i == game->y_exit && game->collect_count == 0)
 		close_window(game);
-	if (game->o_map[i][j] != 'P')
-	{
-		write(2, "Error\nppy", 9);
-		return 0;
-	}
 	if (game->o_map[i][j + 1] != '1' && game->o_map[i][j + 1] != 'E')
 	{
 		if (game->o_map[i][j + 1] == 'C')
@@ -54,24 +56,19 @@ int	move_right(t_game *game)
 		game->player_x = j + 1;
 	}
 	else
-		return 0;
-    if (!change_places(game))
-        return 0;
-    return 1;
+		return (0);
+	if (!change_places(game))
+		return (0);
+	return (1);
 }
+
 int	move_down(t_game *game)
 {
-	int	(i), (j);
-
+	int (i), (j);
 	j = game->player_x;
 	i = game->player_y;
-	if (j == game->x_exit && i + 1 == game->y_exit  && game->collect_count == 0)
+	if (j == game->x_exit && i + 1 == game->y_exit && game->collect_count == 0)
 		close_window(game);
-	if (game->o_map[i][j] != 'P')
-	{
-		write(2, "Error\nppy", 9);
-		return 0;
-	}
 	if (game->o_map[i + 1][j] != '1' && game->o_map[i + 1][j] != 'E')
 	{
 		if (game->o_map[i + 1][j] == 'C')
@@ -84,23 +81,19 @@ int	move_down(t_game *game)
 		game->player_x = j;
 	}
 	else
-		return 0;
-    if (!change_places(game))
-        return 0;
-    return (1);
+		return (0);
+	if (!change_places(game))
+		return (0);
+	return (1);
 }
-int move_up(t_game *game)
+
+int	move_up(t_game *game)
 {
-	int	(i), (j);
+	int (i), (j);
 	j = game->player_x;
 	i = game->player_y;
-	if (j == game->x_exit && i - 1 == game->y_exit  && game->collect_count == 0)
+	if (j == game->x_exit && i - 1 == game->y_exit && game->collect_count == 0)
 		close_window(game);
-	if (game->o_map[i][j] != 'P')
-	{
-		write(2, "Error\nppy", 9);
-		return 0;
-	}
 	if (game->o_map[i - 1][j] != '1' && game->o_map[i - 1][j] != 'E')
 	{
 		if (game->o_map[i - 1][j] == 'C')
@@ -112,31 +105,28 @@ int move_up(t_game *game)
 		game->player_y = i - 1;
 		game->player_x = j;
 	}
-	else 
-		return 0;
-    if (!change_places(game))
-        return 0;
-    return 1;
+	else
+		return (0);
+	if (!change_places(game))
+		return (0);
+	return (1);
 }
-int game_in(t_game *game)
+
+int	game_in(t_game *game)
 {
-	game->h = 64;
-	game->w = 64;
 	game->mlx = mlx_init();
 	count_map(game);
 	if (!game->mlx)
 	{
-		free_map(game->map, game->rows);
-		free_map(game->o_map, game->rows);
+		ft_free_resources(game);
 		write(2, "Error\nmlx", 9);
 		return (0);
 	}
-	game->win = mlx_new_window(game->mlx, game->cols * 64, game->rows * 64, "so_long");
+	game->win = mlx_new_window(game->mlx, game->cols * 64, game->rows * 64,
+			"so_long");
 	if (!game->win)
 	{
 		write(2, "Error\nwin", 9);
-		free_map(game->map, game->rows);
-		free_map(game->o_map, game->rows);
 		ft_free_resources(game);
 		return (0);
 	}
@@ -146,5 +136,5 @@ int game_in(t_game *game)
 	mlx_hook(game->win, 17, 0, close_window, game);
 	mlx_loop(game->mlx);
 	free(game->mlx);
-	return 1;
+	return (1);
 }

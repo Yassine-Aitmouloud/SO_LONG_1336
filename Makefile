@@ -2,7 +2,7 @@ NAME = so_long
 CFLAGS =    -g3  -Wall -Wextra -Werror
 CC = cc #-fsanitize=address
 
-CFILES = main.c get_next_line.c get_next_line_utils.c utils1.c moves.c
+CFILES = main.c get_next_line.c get_next_line_utils.c utils1.c utils2.c utils3.c utils4.c utils5.c utils6.c moves.c
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

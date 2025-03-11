@@ -6,16 +6,12 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:45:35 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 01:30:16 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/11 01:53:19 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "so_long.h"
-void gnl_cleanup(void)
-{
-    char *line = NULL;
-    ft_line(&line, NULL);
-}
+
 char	*ft_creat_left(char *left, char *buffer, int fd)
 {
 	int		check;

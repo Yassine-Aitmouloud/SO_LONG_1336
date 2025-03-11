@@ -144,7 +144,7 @@ int	check_for_ber(char *name)
 	int	len;
 
 	len = ft_strlen(name);
-	if (len < 5 || name[0] == '.' || ft_strcmp(name + len - 4, ".ber") != 0)
+	if (len <= 4  || ft_strcmp(name + len - 4, ".ber") != 0)
 	{
 		write(2, "Error\n.ber", 10);
 		return (0);

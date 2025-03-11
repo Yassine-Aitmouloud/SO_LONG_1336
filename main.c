@@ -5,30 +5,35 @@ void	create_img(t_game *game)
 	game->wall = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", &game->w, &game->h);
 	if (!game->wall)
 	{
+		ft_free_resources(game);
 		write(2, "Error\nwall", 10);
 		exit(0);
 	}
 	game->player = mlx_xpm_file_to_image(game->mlx, "textures/player.xpm", &game->w, &game->h);
 	if (!game->player)
 	{
+		ft_free_resources(game);
 		write(2, "Error\nplayer", 12);
 		exit(0);
 	}
 	game->collect = mlx_xpm_file_to_image(game->mlx, "textures/coin.xpm", &game->w, &game->h);
 	if (!game->collect)
 	{
+		ft_free_resources(game);
 		write(2, "Error\ncollect", 13);
 		exit(0);
 	}
 	game->exit = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", &game->w, &game->h);
 	if (!game->exit)
 	{
+		ft_free_resources(game);
 		write(2, "Error\nexit", 11);
 		exit(0);
 	}
 	game->space = mlx_xpm_file_to_image(game->mlx, "textures/space.xpm", &game->w, &game->h);
 	if (!game->space)
 	{
+		ft_free_resources(game);
 		write(2, "Error\nspace", 12);
 		exit(0);
 	}
@@ -85,14 +90,15 @@ char **store_map(char *filename)
     }
     while ((line = get_next_line(fd)) != NULL)
     {
-		printf("line = %p\n", line);
         if (j == 0)
             j = ft_strlen(line);
         else if (ft_strlen(line) != j)
         {
             write(2, "Error\ninvalid line length\n", 26);
             free(line);
-            free_map(map, i);
+			line = get_next_line(-1); 
+            free(line);
+			free_map(map, i);
             close(fd);
             return NULL;
         }
@@ -232,6 +238,7 @@ char **copy_map(char **map, char *av)
 		if (!o_map[i])
 		{
 			free_map(o_map, i);
+			free_map(map, i);
 			return (NULL);
 		}
 		i++;
@@ -258,6 +265,7 @@ int	main(int ac, char **av)
 	game.map = store_map(av[1]);
 	if (game.map == NULL)
 	{
+		ft_free_resources(&game);
 		write(2, "Error\nstore", 11);
 		return (0);
 	}
@@ -266,41 +274,37 @@ int	main(int ac, char **av)
 	{
 		if (validate_map_line(game.map[i]) == 0)
 		{
-			free_map(game.map, game.rows);
-			free_map(game.o_map, game.rows);
+			ft_free(game.map);
+			ft_free(game.o_map);
 			return (0);
 		}
 		i++;
 	}
 	if (all_walls(game.map) == 0)
 	{
-		free_map(game.map, game.rows);
-		free_map(game.o_map, game.rows);
+		ft_free(game.map);
+		ft_free(game.o_map);
 		write(2, "Error\nwalls", 11);
 		return (0);
 	}
 	if (check_for_data(&game) == 0)
 	{
-		free_map(game.map, game.rows);
-		free_map(game.o_map, game.rows);
+		ft_free(game.map);
+		ft_free(game.o_map);
 		return (0);
 	}
 	game.rows = i;
 	if (chack_valid_path(&game) == 0)
 	{
 		write(2, "Error\ncep", 10);
-		free_map(game.o_map, game.rows);
-		free_map(game.map, game.rows);
+		ft_free_resources(&game);
 		return (0);
 	}
 	if (!game_in(&game))
 	{
-		free_map(game.map, game.rows);
-		free_map(game.o_map, game.rows);
+		ft_free_resources(&game);
 		return (0);
 	}
-	free_map(game.map, game.rows);
-	free_map(game.o_map, game.rows);
 	ft_free_resources(&game);
 	return (1);
 }

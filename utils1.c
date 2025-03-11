@@ -25,7 +25,6 @@ void	free_map(char **map, int rows)
 		i++;
 	}
 	free(map);
-	map = NULL;
 }
 
 int	validate_map_line(char *line)
@@ -280,20 +279,19 @@ void ft_free_image(t_game *game)
 void ft_free_resources(t_game *game)
 {
     if (!game)
-        return;
-
-    if (game->map)
-    {
-        free_map(game->map, game->rows);
-        game->map = NULL;
-    }
+		return;
 	if (game->o_map)
 	{
 		free_map(game->o_map, game->rows);
-		game->o_map = NULL;
 	}
+    if (game->map)
+    {
+        free_map(game->map, game->rows);
+    }
+
     ft_free_image(game);
-    if (game->win)
+    
+	if (game->win)
         mlx_destroy_window(game->mlx, game->win);
     
     if (game->mlx)

@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 21:16:42 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 21:53:28 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 02:29:28 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,23 @@ int	input(int key, t_game *game)
 			ft_printf("count = %d\n", game->count++);
 	}
 	return (0);
+}
+
+int	size_of_screen(t_game *game, char *av)
+{
+	int	width_of_map;
+	int	height_of_map;
+	int	width_of_screen;
+	int	height_of_screen;
+
+	width_of_screen = 32;
+	height_of_screen = 60;
+	width_of_map = count_lines(av);
+	height_of_map = ft_strlen(game->map[0]);
+	if (width_of_map > width_of_screen || height_of_map > height_of_screen)
+	{
+		write(2, "Error\nThe map is too big for the screen", 40);
+		return (0);
+	}
+	return (1);
 }

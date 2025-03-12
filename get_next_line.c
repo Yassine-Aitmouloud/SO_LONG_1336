@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 20:45:35 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 19:25:51 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:21:42 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*ft_line(char **line, char *left)
 	{
 		*line = ft_substr(left, 0, i);
 		tmp = left;
-		left = ft_substr(tmp, i + 1, ft_strlen(tmp) - i);
+		left = ft_substr(tmp, i + 1, ft_strlen(tmp) - 1);
 		free(tmp);
 	}
 	return (left);

@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:35:12 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 21:53:13 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 03:59:01 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ char	**allocate_map(t_helper *helper)
 	while (helper->line != NULL)
 	{
 		if (helper->j == 0)
+		{
 			helper->j = ft_strlen(helper->line);
-		else if (ft_strlen(helper->line) != helper->j)
+		}
+		else if ((ft_strlen(helper->line)) != helper->j)
 		{
 			free(helper->line);
 			helper->line = get_next_line(-1);
@@ -46,7 +48,7 @@ char	**store_map(char *filename)
 	helper.fd = open(filename, O_RDONLY);
 	if (helper.fd == -1)
 	{
-		write(2, "Error\nopen\n", 11);
+		write(2, "Error\nopen fd in store map\n", 27);
 		return (NULL);
 	}
 	helper.map_size = count_lines(filename);
@@ -54,12 +56,12 @@ char	**store_map(char *filename)
 	{
 		write(2, "Error\nempty file\n", 17);
 		close(helper.fd);
-		return (NULL);
+		exit(0);
 	}
 	helper.map = (char **)malloc(sizeof(char *) * (helper.map_size + 1));
 	if (!helper.map)
 	{
-		write(2, "Error\nmalloc\n", 13);
+		write(2, "Error\nmalloc in store_map\n", 26);
 		close(helper.fd);
 		return (NULL);
 	}
@@ -70,7 +72,7 @@ void	get_the_map(int ac, char **av, t_game *game)
 {
 	if (ac != 2)
 	{
-		write(2, "Error\nThere is no map", 23);
+		write(2, "Error\nThere is no map", 22);
 		exit(0);
 	}
 	if (check_for_ber(av[1]) == 0)
@@ -114,10 +116,14 @@ void	validate_map(t_game *game)
 int	main(int ac, char **av)
 {
 	t_game	game;
+	int		screen;
 
 	game = (t_game){0};
 	game.count = 1;
 	get_the_map(ac, av, &game);
+	screen = size_of_screen(&game, av[1]);
+	if (screen == 0)
+		return (free_maps(&game), 0);
 	validate_map(&game);
 	if (check_valid_path(&game) == 0)
 	{

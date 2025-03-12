@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 19:34:03 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 19:40:06 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 03:57:56 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	validate_map_line(char *line)
 		if (line[i] != '1' && line[i] != '0' && line[i] != 'P' && line[i] != 'E'
 			&& line[i] != 'C')
 		{
-			write(2, "Err3r\n", 6);
+			write(2, "Error\nYou can use '1' '0' 'C' 'E' 'P'", 37);
 			return (0);
 		}
 		i++;
@@ -85,15 +85,37 @@ int	all_walls(char **map)
 	return (1);
 }
 
-int	check_for_ber(char *name)
+char *	ft_strrchr(const char *s, int c)
 {
-	int	len;
+	int	i;
 
-	len = ft_strlen(name);
-	if (len <= 4 || ft_strcmp(name + len - 4, ".ber") != 0)
+	i = ft_strlen(s);
+	while (i >= 0)
 	{
-		write(2, "Error\n.ber", 10);
-		return (0);
+		if (s[i] == c)
+			return ((char *)&s[i]);
+		i--;
 	}
-	return (1);
+	return (NULL);
+}
+
+char *get_filename(char *path)
+{
+    char *filename = ft_strrchr(path, '/');
+	if (filename == NULL)
+		return (path);
+	return (filename + 1);
+}
+
+int check_for_ber(char *name)
+{
+    char *filename = get_filename(name);
+    int len = ft_strlen(filename);
+    if (len <= 4 || ft_strcmp(filename + len - 4, ".ber") != 0)
+    {
+        write(2, "Error\n.ber\n", 11);
+        return 0;
+    }
+
+    return 1;
 }

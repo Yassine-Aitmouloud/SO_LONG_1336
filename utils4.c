@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 19:46:32 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/11 20:26:03 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 02:33:55 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	check_for_pce(t_game *game)
 {
 	if (game->player_count != 1 || game->collect_count == 0
-		|| game->exit_count == 0)
+		|| game->exit_count != 1)
 	{
-		write(2, "Error\nPCE", 9);
+		write(2, "Error\nYou need one P one E and some Cs", 39);
 		return (0);
 	}
 	return (1);
@@ -33,7 +33,7 @@ size_t	count_lines(const char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		write(2, "Error\nopen\n", 11);
+		write(2, "Error\nThere is no file", 11);
 		return (0);
 	}
 	line = get_next_line(fd);

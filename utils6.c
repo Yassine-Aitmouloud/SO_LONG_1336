@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 21:16:42 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/12 19:51:24 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 20:12:56 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,27 @@ int	size_of_screen(t_game *game, char *av)
 		return (0);
 	}
 	return (1);
+}
+
+char	*get_filename(char *path)
+{
+	char	*filename;
+
+	filename = ft_strrchr(path, '/');
+	if (filename == NULL)
+		return (path);
+	return (filename + 1);
+}
+
+void	free_map(char **map, int rows)
+{
+	int	i;
+
+	i = 0;
+	while (i < rows)
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }

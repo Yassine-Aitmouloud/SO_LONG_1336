@@ -6,24 +6,11 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 19:34:03 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/12 03:57:56 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 20:12:44 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	free_map(char **map, int rows)
-{
-	int	i;
-
-	i = 0;
-	while (i < rows)
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
 
 int	validate_map_line(char *line)
 {
@@ -85,7 +72,7 @@ int	all_walls(char **map)
 	return (1);
 }
 
-char *	ft_strrchr(const char *s, int c)
+char	*ft_strrchr(const char *s, int c)
 {
 	int	i;
 
@@ -99,23 +86,17 @@ char *	ft_strrchr(const char *s, int c)
 	return (NULL);
 }
 
-char *get_filename(char *path)
+int	check_for_ber(char *name)
 {
-    char *filename = ft_strrchr(path, '/');
-	if (filename == NULL)
-		return (path);
-	return (filename + 1);
-}
+	char	*filename;
+	int		len;
 
-int check_for_ber(char *name)
-{
-    char *filename = get_filename(name);
-    int len = ft_strlen(filename);
-    if (len <= 4 || ft_strcmp(filename + len - 4, ".ber") != 0)
-    {
-        write(2, "Error\n.ber\n", 11);
-        return 0;
-    }
-
-    return 1;
+	filename = get_filename(name);
+	len = ft_strlen(filename);
+	if (len <= 4 || ft_strcmp(filename + len - 4, ".ber") != 0)
+	{
+		write(2, "Error\n.ber\n", 11);
+		return (0);
+	}
+	return (1);
 }

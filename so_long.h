@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:39:52 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/12 03:11:29 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 20:14:20 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ typedef struct s_game
 	int		cols;
 	char	**map;
 }			t_game;
-int	ft_strend_cmp(char *name, char *end);
+char		*ft_strrchr(const char *s, int c);
+char		*get_filename(char *path);
 int			size_of_screen(t_game *game, char *av);
 void		free_maps(t_game *game);
 void		get_the_map(int ac, char **av, t_game *game);

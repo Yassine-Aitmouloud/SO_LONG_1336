@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:35:12 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/12 03:59:01 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:41:53 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ char	**store_map(char *filename)
 	helper.fd = open(filename, O_RDONLY);
 	if (helper.fd == -1)
 	{
-		write(2, "Error\nopen fd in store map\n", 27);
-		return (NULL);
+		write(2, "Error\nopen dosn't open\n", 24);
+		exit(0);
 	}
 	helper.map_size = count_lines(filename);
 	if (helper.map_size == 0)

@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 21:16:42 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/12 02:29:28 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:51:24 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	create_img(t_game *game)
 int	input(int key, t_game *game)
 {
 	if (key == ESC)
-		close_window(game);
-	else if (key == 17)
 		close_window(game);
 	else if (key == 119)
 	{

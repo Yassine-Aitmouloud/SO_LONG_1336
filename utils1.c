@@ -6,7 +6,7 @@
 /*   By: yaaitmou <yaaitmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 19:26:38 by yaaitmou          #+#    #+#             */
-/*   Updated: 2025/03/12 20:00:32 by yaaitmou         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:07:27 by yaaitmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,7 @@ int	check_valid_path(t_game *game)
 	rows = 0;
 	cols = 0;
 	while (game->map[rows])
-	{
 		rows++;
-	}
-	if (rows > 0)
-		cols = ft_strlen(game->map[0]);
 	find_player_position(game);
 	flood_fill(game->map, game->player_y, game->player_x);
 	if (check_for_ec(game, rows) == 0)
